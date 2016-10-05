@@ -394,9 +394,9 @@ Node* Graph::AllocateNode(Node::Properties* props, const Node* cost_node) {
 void Graph::ReleaseNode(Node* node) {
   DCHECK(IsValidNode(node)) << node->DebugString();
   nodes_[node->id()] = nullptr;
+  node->Clear();
   free_nodes_.push_back(node);
   --num_nodes_;
-  node->Clear();
 }
 
 }  // namespace tensorflow
