@@ -89,6 +89,16 @@ def if_x86(a):
       "//conditions:default": [],
   })
 
+def if_mpi(a):
+    return select({
+      "//tensorflow:linux_x86_64": a,
+      "//conditions:default": [],
+})
+   
+
+def tf_mpi_opts():
+    return(if_mpi(["-DUSE_MPI=1"])) 
+
 # LINT.IfChange
 def tf_copts():
   return (["-DEIGEN_AVOID_STL_ARRAY",
@@ -97,6 +107,7 @@ def tf_copts():
            "-fno-exceptions",] +
           if_cuda(["-DGOOGLE_CUDA=1"]) +
           if_android_arm(["-mfpu=neon"]) +
+          if_mpi(["-DUSE_MPI=1"]) +
           select({
               "//tensorflow:android": [
                   "-std=c++11",
