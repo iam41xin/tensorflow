@@ -160,15 +160,15 @@ Status BaseRemoteRendezvous::Send(const Rendezvous::ParsedKey& parsed,
   }
 
   // Only test the first time we enter this function on this thread
-  static int mpiDisabled = -1;
+  static int mpiEnabled = -1;
 #if USE_MPI
-  if (mpiDisabled < 0) {
-    const char* env = getenv("MPI_PATH_DISABLED");
-    if (env && env[0] == '1') mpiDisabled = 1;
-    else  mpiDisabled = 0;
+  if (mpiEnabled < 0) {
+    const char* env = getenv("MPI_PATH_ENABLED");
+    if (env && env[0] == '1') mpiEnabled = 1;
+    else  mpiEnabled = 0;
   }
 #else
-    mpiDisabled = 1;
+    mpiEnabled = 1;
 #endif
 
 
@@ -177,7 +177,7 @@ Status BaseRemoteRendezvous::Send(const Rendezvous::ParsedKey& parsed,
   bool isSrc = IsLocalDevice(*env_, parsed.src_device);
   bool isDst = IsLocalDevice(*env_, parsed.dst_device);
   bool same = isSrc && isDst;
-  if (!same && mpiDisabled != 1) {
+  if (!same && mpiEnabled) {
     Status s;
     SendToRemote(parsed, args, val, is_dead, s);
     return s;

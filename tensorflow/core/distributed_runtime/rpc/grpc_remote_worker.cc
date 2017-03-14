@@ -415,8 +415,8 @@ class RDMARemoteWorker : public GrpcRemoteWorker {
   // Max size of the data chuncks, 512MB
   const size_t maxSize = 1024 * 1024 * 512;
 
-  // If the MPI_PATH_DISABLED variable is set then disable this code path
-  bool disabledAtRuntime = false;
+  // If the MPI_PATH_ENABLED variable is set then enable this code path
+  bool mpiEnabled = false;
 
  public:
   explicit RDMARemoteWorker(SharedGrpcChannelPtr channel,
@@ -429,9 +429,9 @@ class RDMARemoteWorker : public GrpcRemoteWorker {
     MPICheck(MPI_Comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &v, &flag));
     maxMessageTag = *(int*)v;
 
-    // Test if this path is disabled at launch
-    const char* env = getenv("MPI_PATH_DISABLED");
-    if (env && env[0] == '1') disabledAtRuntime = true;
+    // Test at launch if MPI is to be enabled
+    const char* env = getenv("MPI_PATH_ENABLED");
+    if (env && env[0] == '1') mpiEnabled = true;
   }
 
   void SendTensorSync(const WorkerEnv* env, const Rendezvous::ParsedKey& key,
@@ -449,7 +449,7 @@ class RDMARemoteWorker : public GrpcRemoteWorker {
   void RecvTensorAsync(WorkerEnv* env, CallOptions* call_opts,
                        const RecvTensorRequest* request,
                        TensorResponse* response, StatusCallback done) override {
-    if (disabledAtRuntime) {
+    if (!mpiEnabled) {
       GrpcRemoteWorker::RecvTensorAsync(env, call_opts, request, response,
                                         done);
     } else {
