@@ -92,6 +92,7 @@ def if_x86(a):
 def if_mpi(a):
     return select({
       "//tensorflow:linux_x86_64": a,
+      "//tensorflow:linux_ppc64le": a,
       "//conditions:default": [],
 })
    
