@@ -27,7 +27,7 @@ limitations under the License.
 
 #if USE_MPI
 
-#include "third_party/mpi/mpi.h"
+#include "mpi.h"
 
 #define MPICheck(cmd)                                                 \
   do {                                                                \

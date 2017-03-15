@@ -35,7 +35,7 @@ limitations under the License.
 #include "tensorflow/core/util/device_name_utils.h"
 #include "tensorflow/core/distributed_runtime/worker_env.h"
 #include "tensorflow/core/lib/hash/hash.h"
-#include "third_party/mpi/mpi.h"
+#include "mpi.h"
 
 #define MPICheck(cmd)                                                 \
   do {                                                                \

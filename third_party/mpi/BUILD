@@ -18,6 +18,6 @@ cc_library(
     srcs = select({
         "//conditions:default": ["libmpi.so"],
     }),
-    hdrs = ["mpi.h", "mpi_portable_platform.h"],
+    hdrs = glob(["**/*.h"]),
     visibility = ["//tensorflow:__subpackages__"],
 )
