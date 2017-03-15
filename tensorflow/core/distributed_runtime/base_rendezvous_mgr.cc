@@ -168,7 +168,7 @@ Status BaseRemoteRendezvous::Send(const Rendezvous::ParsedKey& parsed,
     else  mpiEnabled = 0;
   }
 #else
-    mpiEnabled = 1;
+    mpiEnabled = 0;
 #endif
 
 
