@@ -16,7 +16,7 @@ filegroup(
 cc_library(
     name = "mpi",
     srcs = select({
-        "//conditions:default": ["libmpi.so"],
+        "//conditions:default": ["libmpi.so", "libmpi_cxx.so"],
     }),
     hdrs = glob(["**/*.h"]),
     visibility = ["//tensorflow:__subpackages__"],

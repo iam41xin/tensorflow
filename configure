@@ -188,10 +188,11 @@ if [ "$TF_NEED_MPI" == "1" ]; then
   #Link the MPI header files
   ln -sf "${MPI_HOME}/include" third_party/mpi/include
 
-  if [ -e "${MPI_HOME}/lib/libmpi.so" ]; then
+  if [ -e "${MPI_HOME}/lib/libmpi.so" -a -e "$MPI_HOME/lib/libmpi_cxx.so" ]; then
     ln -sf "${MPI_HOME}/lib/libmpi.so" third_party/mpi/libmpi.so
+    ln -sf "${MPI_HOME}/lib/libmpi_cxx.so" third_party/mpi/libmpi_cxx.so
   else
-    echo "Cannot find the MPI library file in ${MPI_HOME}/lib "
+    echo "Cannot find the MPI library files in ${MPI_HOME}/lib "
     exit 1
   fi
 else
